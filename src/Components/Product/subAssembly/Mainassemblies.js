@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styles from "../product.module.css";
 
-function MainAssemblies({ SubAssembly,handleInputChange }) {
-  const [secondaryFunctions, setSecondaryFunctions] = useState(['']);
+function MainAssemblies({ SubAssembly, handleInputChange }) {
+  const [secondaryFunctions, setSecondaryFunctions] = useState([""]);
   const [selectedRows, setSelectedRows] = useState([]);
 
   const handleAddSecondary = () => {
@@ -16,7 +16,11 @@ function MainAssemblies({ SubAssembly,handleInputChange }) {
   };
 
   const handleDelete = () => {
-    if (window.confirm("Are you sure you want to delete selected secondary functions?")) {
+    if (
+      window.confirm(
+        "Are you sure you want to delete selected secondary functions?"
+      )
+    ) {
       const updatedSecondaryFunctions = secondaryFunctions.filter(
         (_, index) => !selectedRows.includes(index)
       );
@@ -41,15 +45,15 @@ function MainAssemblies({ SubAssembly,handleInputChange }) {
   };
 
   const handleSave = () => {
-    SubAssembly.secondaryFunction=secondaryFunctions
-    console.log(SubAssembly)
+    SubAssembly.secondaryFunction = secondaryFunctions;
+    console.log(SubAssembly);
   };
 
   return (
     <div aria-label="SubAssemblyAdded" className={styles.form}>
       <div>
         <table className={styles.table}>
-        <thead>
+          <thead>
             <tr>
               <th className={styles.th}>Name of sub-assembly</th>
               <td className={styles.td}>{SubAssembly.SubAssemblyName}</td>
@@ -70,16 +74,25 @@ function MainAssemblies({ SubAssembly,handleInputChange }) {
               <th className={styles.th}>
                 Do you wish to add its subassemblies/components information?
               </th>
-              <td className={styles.td}>{SubAssembly.isSubAssemblyComponentsNeeded}</td>
+              <td className={styles.td}>
+                {SubAssembly.isSubAssemblyComponentsNeeded}
+              </td>
             </tr>
             <tr>
               <th className={styles.th}>Main Functions </th>
               <td className={styles.td}>
-                <input type="text" name="mainFunction" value={SubAssembly.mainFunctions} onChange={(event)=>{handleInputChange(event)}}/>
+                <textarea
+                  className={styles.input}
+                  name="mainFunction"
+                  value={SubAssembly.mainFunctions}
+                  onChange={(event) => {
+                    handleInputChange(event);
+                  }}
+                />
               </td>
             </tr>
             <tr>
-              <th className={styles.th}>Add secondary function</th>
+              <th className={styles.th} colSpan="2">Add secondary function</th>
             </tr>
           </thead>
           <tbody>
@@ -91,9 +104,10 @@ function MainAssemblies({ SubAssembly,handleInputChange }) {
                 }}
                 onClick={() => toggleRowSelection(index)}
               >
-                <th className={styles.th}>Secondary function {index + 1}</th>
+                <th className={styles.th} >Secondary function {index + 1}</th>
                 <td className={styles.td}>
                   <input
+                    className={styles.input}
                     type="text"
                     value={secondaryFunction}
                     onChange={(event) =>

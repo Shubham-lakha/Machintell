@@ -1,45 +1,52 @@
-import React, { useState } from 'react';
-import ProductDetails from './ProductDetails';
-import styles from '../product.module.css';
+import React, { useState } from "react";
+import ProductDetails from "./ProductDetails";
+import styles from "../product.module.css";
 
 function AddNewProduct() {
-  const [productName, setProductName] = useState('');
-  const [fileLocation, setFileLocation] = useState('');
-  const [form, setForm] = useState('');
-  const [error, setError] = useState('');
+  const [product, setProduct] = useState({
+    productName: "",
+    fileLocation: "",
+    mainFunction: "",
+    secondaryFunction: [],
+    specifications: [],
+  });
 
-  const handleProductNameChange = (event) => {
-    setProductName(event.target.value);
-  };
+  const [form, setForm] = useState("");
+  const [error, setError] = useState("");
 
-  const handleFileLocationChange = (event) => {
-    setFileLocation(event.target.value);
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    // console.log(value);
+    setProduct((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   const handleSave = () => {
-    console.log('Saving data...', productName, fileLocation);
+    console.log("Saving data...", product);
 
     // Perform validation
     if (validation()) {
-      setForm('productAdded'); // Set the form state to 'productAdded' to display ProductDetails
+      setForm("productAdded"); // Set the form state to 'productAdded' to display ProductDetails
     } else {
-      console.log('Validation failed');
+      console.log("Validation failed");
     }
   };
 
   const validation = () => {
     let isValid = true;
-    let errorMessage = '';
+    let errorMessage = "";
 
     // Check if productName is empty
-    if (productName.trim() === '') {
-      errorMessage += 'Please enter product name.\n';
+    if (product.productName.trim() === "") {
+      errorMessage += "Please enter product name.\n";
       isValid = false;
     }
 
     // Check if fileLocation is empty
-    if (fileLocation.trim() === '') {
-      errorMessage += 'Please enter file location.\n';
+    if (product.fileLocation.trim() === "") {
+      errorMessage += "Please enter file location.\n";
       isValid = false;
     }
 
@@ -51,8 +58,8 @@ function AddNewProduct() {
 
   return (
     <div aria-label="Product Form" className={styles.form}>
-      {form === 'productAdded' ? (
-        <ProductDetails productName={productName} fileLocation={fileLocation} />
+      {form === "productAdded" ? (
+        <ProductDetails product={product} handleInputChange={handleInputChange} />
       ) : (
         <form>
           <div className={styles.tableContainer}>
@@ -64,9 +71,9 @@ function AddNewProduct() {
                     <input
                       className={styles.input}
                       type="text"
-                      value={productName}
-                      onChange={handleProductNameChange}
-                      required
+                      value={product.productName}
+                      onChange={handleInputChange}
+                      name="productName"
                     />
                   </td>
                 </tr>
@@ -78,16 +85,20 @@ function AddNewProduct() {
                     <input
                       className={styles.input}
                       type="text"
-                      value={fileLocation}
-                      onChange={handleFileLocationChange}
-                      required
+                      value={product.fileLocation}
+                      onChange={handleInputChange}
+                      name="fileLocation"
                     />
                   </td>
                 </tr>
               </tbody>
             </table>
             <div className={styles.buttonGroup}>
-              <button type="button" className={styles.btn2} onClick={handleSave}>
+              <button
+                type="button"
+                className={styles.btn2}
+                onClick={handleSave}
+              >
                 Save
               </button>
             </div>

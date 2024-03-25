@@ -24,7 +24,7 @@ const SubAssembly = () => {
 
   const handleSave = () => {
     if (validation()) {
-      // console.log("Saving data...", subAssembly);
+      console.log("Saving data...", subAssembly);
       setForm("subAssemblyAdded");
     } else {
       console.log("Please enter subAssembly name");

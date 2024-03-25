@@ -25,7 +25,7 @@ function SpecificationDetails({product}) {
   };
 
   const handleSave = () => {
-    // product.specifications=specifications;
+    product.specifications=specifications;
     console.log(product);
 
     if (validation()) {

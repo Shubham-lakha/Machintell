@@ -2,22 +2,16 @@ import React, { useEffect, useState } from "react";
 import SpecificationDetails from "./SpecificationDetails";
 import styles from "../product.module.css";
 
-function ProductDetails({ productName, fileLocation }) {
-  const [mainFunction, setMainFunction] = useState("");
+function ProductDetails({product,handleInputChange}) {
   const [error, setError] = useState('');
-  const [product, setProduct] = useState({
-    productName: productName,
-    fileLocation: fileLocation,
-    mainFunction:'',
-    secondaryFunction:[], specifications:[],
-  });
+  
   const [secondaryFunctions, setSecondaryFunctions] = useState([""]); // State to store secondary functions
   const [selectedRows, setSelectedRows] = useState([]); // State to store selected row indices
   const [form, setForm] = useState("");
   const [productId, setProductId] = useState("");
   useEffect( () => {
-    generateProductId(productName);
-  }, [productName]);
+    generateProductId(product.productName);
+  }, [product.productName]);
 
   const generateProductId = (productName) => {
     if (productName.length >= 2){
@@ -34,9 +28,7 @@ function ProductDetails({ productName, fileLocation }) {
     }
   }
 
-  const handleMainFunctionChange = (event) => {
-    setMainFunction(event.target.value);
-  };
+  
 
   const handleAddSecondary = () => {
     setSecondaryFunctions([...secondaryFunctions, ""]); // Add a new empty secondary function to the state
@@ -46,10 +38,11 @@ function ProductDetails({ productName, fileLocation }) {
     const updatedSecondaryFunctions = [...secondaryFunctions];
     updatedSecondaryFunctions[index] = value;
     setSecondaryFunctions(updatedSecondaryFunctions);
+    product.secondaryFunction=secondaryFunctions
   };
   
   const handleSave = () => {
-    console.log('Saving data...', mainFunction, secondaryFunctions);
+    console.log('Saving data...', product);
 
     // Perform validation
     if (validation()) {
@@ -64,7 +57,7 @@ function ProductDetails({ productName, fileLocation }) {
     let errorMessage = '';
 
     // Check if mainFunction is empty
-    if (mainFunction.trim() === '') {
+    if (product.mainFunction.trim() === '') {
       errorMessage += 'Please enter Main Function.\n';
       isValid = false;
     }
@@ -114,14 +107,14 @@ function ProductDetails({ productName, fileLocation }) {
   return (
     <div aria-label="productAdded" className={styles.form}>
       {form === "specifications" ? (
-        <SpecificationDetails productName={productName} fileLocation={fileLocation} />
+        <SpecificationDetails product={product} />
       ) : (
         <div>
           <table className={styles.table}>
             <thead>
               <tr>
                 <th className={styles.th}>Name of the Product</th>
-                <td className={styles.td}>{productName}</td>
+                <td className={styles.td}>{product.productName}</td>
               </tr>
               <tr>
                 <th className={styles.th}>Product ID</th>
@@ -131,8 +124,9 @@ function ProductDetails({ productName, fileLocation }) {
                 <th className={styles.th}>Main Functions</th>
                 <td className={styles.td}>
                   <textarea className={styles.input}
-                    value={mainFunction}
-                    onChange={handleMainFunctionChange}
+                    value={product.mainFunction}
+                    name="mainFunction"
+                    onChange={(event)=>{handleInputChange(event)}}
                   />
                 </td>
               </tr>
