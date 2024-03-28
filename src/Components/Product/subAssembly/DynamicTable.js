@@ -1,26 +1,47 @@
-import React from 'react'
+import React from "react";
+import code from './ProductDetails.module.css';
+import styles from './newProduct.module.css';
 
-function DynamicTable({ headers, data }) {
+function DynamicTable({ headers, data, onInputChange }) {
+    const renderCell = (cell, rowIndex, cellIndex) => {
+        // console.log(cell);
+        if (cell.type === "input") {
+          return (
+            <input className={styles.input}
+              type="text"
+              value={cell.value}
+              onChange={(e) => onInputChange(e, rowIndex, cellIndex)}
+            />
+          );
+        } else {
+          return cell[headers[cellIndex]];
+        }
+      };
+
   return (
-    <table>
-        <thead>
-            <tr>
-                {headers.map(header => (
-                    <th key={header}>{header}</th>
-                ))}
-            </tr>
-        </thead>
-        <tbody>
-            {data.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                    {row.map((cell, cellIndex) => (
-                        <td key={cellIndex}>{cell}</td>
-                    ))}
-                </tr>
+    <table className={code.table1}>
+      <thead>
+        <tr>
+          {headers.map((header) => (
+            <th className={styles.th} key={header}>
+              {header}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((row, rowIndex) => (
+          <tr key={rowIndex}>
+            {row.map((cell, cellIndex) => (
+              <td className={styles.td} key={cellIndex}>
+                {renderCell(cell, rowIndex, cellIndex)}
+              </td>
             ))}
-        </tbody>
+          </tr>
+        ))}
+      </tbody>
     </table>
-  )
+  );
 }
 
-export default DynamicTable
+export default DynamicTable;

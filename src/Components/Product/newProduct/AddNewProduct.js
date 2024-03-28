@@ -50,7 +50,7 @@ function AddNewProduct() {
   };
 
   return (
-    <div aria-label="Product Form" className={styles.form}>
+    <div aria-label="ProductForm" className={styles.form}>
       {form === 'productAdded' ? (
         <ProductDetails productName={productName} fileLocation={fileLocation} />
       ) : (

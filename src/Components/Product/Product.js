@@ -12,11 +12,11 @@ const Product = () => {
         setForm(formType)
     }
     function displayForm(){
-        if(form==="Product Form")
+        if(form==="ProductForm")
         return <AddNewProduct/>
         else if (form==="editProduct")
         return <EditProduct/>
-        else if(form==="subAssembly")
+        else if(form==="Subassembly")
         return <SubAssembly/>
         else if(form==="components")
         return <Components/>
@@ -26,7 +26,7 @@ const Product = () => {
       <div className={styles.container}>
         <div className={styles.leftbox}>
           <div className={styles.buttons}>
-            <button type="button" className={styles.btn} onClick={()=>{toggleFormDisplay("newProduct")}}>
+            <button type="button" className={styles.btn} onClick={()=>{toggleFormDisplay("ProductForm")}}>
               Add new product
             </button>
             <button type="button" className={styles.btn} onClick={()=>{toggleFormDisplay("editProduct")}}>
@@ -37,7 +37,7 @@ const Product = () => {
         </div>
         <div className={styles.middlebox}>
           <div className={styles.buttons}>
-            <button type="button" className={styles.btn} onClick={()=>{toggleFormDisplay("subAssembly")}}>
+            <button type="button" className={styles.btn} onClick={()=>{toggleFormDisplay("Subassembly")}}>
               Add sub-assembly
             </button>
             <button type="button" className={styles.btn} onClick={()=>{toggleFormDisplay("components")}}>

@@ -1,35 +1,52 @@
 import React, { useState } from "react";
-import styles from "../product.module.css";
+import styles from "./subAssembly.module.css"
 import Mainassemblies from "./Mainassemblies";
 
 const SubAssembly = () => {
-  const [SubAssemblyName, setsubAssemblyName] = useState("");
-  const [fileLocation, setFileLocation] = useState("");
+  const [subAssemblyName, setSubAssemblyName] = useState("");
+  const [fileLocation, setfileLocation] = useState("");
   const [form, setForm] = useState("");
+  const [error, setError] = useState('');
 
-  const handlesubAssemblyNameChange = (event) => {
-    setsubAssemblyName(event.target.value);
+  const handleSubAssemblyNameChange = (event) => {
+    setSubAssemblyName(event.target.value);
   };
 
-  const handleFileLocationChange = (event) => {
-    setFileLocation(event.target.value);
+  const handlefileLocationChange = (event) => {
+    setfileLocation(event.target.value);
   };
 
   const handleSave = () => {
     // validation();
+    console.log("Saving data...", subAssemblyName, fileLocation);
 
-    if (validation() === "true") {
-      console.log("Saving data...", SubAssemblyName, fileLocation);
+    // Perform validation
+    if (validation() === true) {
       setForm("subAssemblyAdded"); // Set the form state to 'subassemblyAdded' to display SubAssembly Details
     } else {
-      console.log("please enter subAssembly name");
+      console.log("Validation failed");
     }};
+
   const validation = () => {
-    if (SubAssembly === "") {
-      console.log("subAssemblyName is empty");
-      return false;
+    let isValid = true;
+    let errorMessage = '';
+
+    // Check if productName is empty
+    if (subAssemblyName.trim() === '') {
+      errorMessage += 'Please enter subAssembly name.\n';
+      isValid = false;
     }
-    return true;
+
+    // Check if fileLocation is empty
+    if (fileLocation.trim() === '') {
+      errorMessage += 'Please enter file location.\n';
+      isValid = false;
+    }
+
+     // Set error message
+    setError(errorMessage);
+
+    return isValid;
   };
   const [issubAssembliesComponents, setIssubAssembliesComponents] =
     useState("No");
@@ -37,14 +54,16 @@ const SubAssembly = () => {
 
   return (
     <>
-      <div aria-label="MainFunction" className={styles.form}>
+      <div aria-label="Subassembly" className={styles.form}>
         {form === "subAssemblyAdded" ? (
           <Mainassemblies
-            SubAssemblyName={SubAssemblyName}
+            subAssemblyName={subAssemblyName}
             fileLocation={fileLocation}
           />
         ) : (
           <form>
+            <div className={styles.tableContainer}>
+
             <table className={styles.table}>
               <thead>
                 <tr>
@@ -53,8 +72,8 @@ const SubAssembly = () => {
                     <input
                       className={styles.input}
                       type="text"
-                      value={SubAssemblyName}
-                      onChange={handlesubAssemblyNameChange}
+                      value={subAssemblyName}
+                      onChange={handleSubAssemblyNameChange}
                       required
                     />
                   </td>
@@ -68,28 +87,19 @@ const SubAssembly = () => {
                       className={styles.input}
                       type="text"
                       value={fileLocation}
-                      onChange={handleFileLocationChange}
-                    />
+                      onChange={handlefileLocationChange}
+                      required
+                      />
                   </td>
                 </tr>
                 <tr>
                   <th className={styles.th}>Is it completely bought up</th>
                   <td className={styles.td}>
-                    {/* <Dropdown autoClose="inside">
-                         <Dropdown.Toggle variant="success" id="dropdown-basic" autoClose="inside">
-                           Yes/No
-                         </Dropdown.Toggle>
-                   
-                         <Dropdown.Menu>
-                           <Dropdown.Item href="#/action-1">Yes</Dropdown.Item>
-                           <Dropdown.Item href="#/action-2">No</Dropdown.Item>
-                         </Dropdown.Menu>
-                       </Dropdown> */}
                     <select
                       className={styles.dropdown}
                       value={isBoughtUp} // ...force the select's value to match the state variable...
                       onChange={(e) => setIsBoughtUp(e.target.value)} // ... and update the state variable on any change!
-                    >
+                      >
                       <option value="Yes">Yes</option>
                       <option value="No">No</option>
                     </select>
@@ -100,28 +110,13 @@ const SubAssembly = () => {
                     Do you wish to add its subassemblies/components information?
                   </th>
                   <td className={styles.td}>
-                    {/* <Dropdown >
-                         <Dropdown.Toggle variant="success" id="dropdown-basic" autoClose="inside">
-                           Yes/No
-                         </Dropdown.Toggle>
-                   
-                         <Dropdown.Menu className={styles.btn} >
-                           <Dropdown.Item href="#/action-1">Yes</Dropdown.Item>
-                           <Dropdown.Item href="#/action-2">No</Dropdown.Item>
-                         </Dropdown.Menu>
-                       </Dropdown> */}
-                    {/* <select>
-                      <option value="Yes">Yes</option>
-
-                      <option value="No">No</option>
-                    </select> */}
                     <select
                       className={styles.dropdown}
                       value={issubAssembliesComponents} // ...force the select's value to match the state variable...
                       onChange={(e) =>
                         setIssubAssembliesComponents(e.target.value)
                       } // ... and update the state variable on any change!
-                    >
+                      >
                       <option value="Yes">Yes</option>
                       <option value="No">No</option>
                     </select>
@@ -134,8 +129,14 @@ const SubAssembly = () => {
                 Save
               </button>
             </div>
+           </div>
           </form>
         )}
+        {error && (
+        <div className={styles.error}>
+          <pre>{error}</pre>
+        </div>
+      )}
       </div>
     </>
   );

@@ -1,0 +1,37 @@
+.table{
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20%;
+    margin-bottom: 2%;
+  }
+.th {
+    border: 1px solid black;
+    align-items: left;
+    padding: 8px;
+  }
+.td {
+    border: 1px solid black;
+    align-items: left;
+    padding: 8px;
+  }
+  
+  .form{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .btn2{
+    float: right;
+  }
+  
+  .input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    font-size: inherit;
+    font-family: inherit;
+    appearance: none;
+  }
