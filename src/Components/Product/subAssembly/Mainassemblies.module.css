@@ -1,6 +1,6 @@
 .subAssemblyForm{
     display: flex;
-    flex-wrap: column;
+    flex-wrap: row;
     margin-top: 5%;
     width: 100%;
 }
@@ -26,6 +26,7 @@
 }
 
 .btn{
+    margin-top: 5px;
     margin-bottom: 5%;
     border: 0px;
     font-weight: bold;
@@ -44,4 +45,5 @@
 
 .Vbtn{
     margin-top: 5.5%;
+    margin-left: 1.5%;
 }

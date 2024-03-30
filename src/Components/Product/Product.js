@@ -27,10 +27,12 @@ const Product = () => {
         <div className={styles.leftbox}>
           <div className={styles.buttons}>
             <button type="button" className={styles.btn} onClick={()=>{toggleFormDisplay("ProductForm")}}>
-              Add new product
+
+               Add new product
             </button>
             <button type="button" className={styles.btn} onClick={()=>{toggleFormDisplay("editProduct")}}>
               Edit product
+
             </button>
           </div>
           <div className={styles.columnTitle}>Product Details</div>
@@ -42,6 +44,7 @@ const Product = () => {
             </button>
             <button type="button" className={styles.btn} onClick={()=>{toggleFormDisplay("components")}}>
               Add component
+
             </button>
           </div>
           <div className={styles.columnTitle}>Main Assemblies</div>

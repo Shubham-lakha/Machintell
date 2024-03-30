@@ -33,7 +33,7 @@ const SubAssembly = () => {
 
     // Check if productName is empty
     if (subAssemblyName.trim() === '') {
-      errorMessage += 'Please enter subAssembly name.\n';
+      errorMessage += 'Please enter sub-assembly name.\n';
       isValid = false;
     }
 

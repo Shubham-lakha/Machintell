@@ -5,12 +5,12 @@
     margin-bottom: 2%;
   }
 .th {
-    border: 1px solid black;
+    border: 1px solid #00153e;
     align-items: left;
     padding: 8px;
   }
 .td {
-    border: 1px solid black;
+    border: 1px solid #00153e;
     align-items: left;
     padding: 8px;
   }
@@ -34,4 +34,18 @@
     font-size: inherit;
     font-family: inherit;
     appearance: none;
+  }
+  .btn {
+    align-items: center;
+    float: right;
+    margin: 5px;
+    padding: 2px;
+    background-color: rgba(169, 173, 173, 0.866);
+    border: 1px solid #00153e;
+    border-radius: 7px;
+    color: white;
+  }
+  .error{
+    color: red;
+    font-size: 20px;
   }

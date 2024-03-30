@@ -42,9 +42,13 @@
 }
 .btn {
   align-items: center;
-  /* width: 100%; */
-  margin: 3px;
+  margin: 5px;
   padding: 2px;
+  background-color: rgba(169, 173, 173, 0.866);
+  border: 1px solid #00153e;
+  border-radius: 7px;
+  color: white;
+
 }
 .col {
   margin: 0%;

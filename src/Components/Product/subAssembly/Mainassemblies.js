@@ -224,21 +224,8 @@ function Mainassemblies({subAssemblyName,fileLocation,}) {
               ))}
             </tbody>
             )}
-          </table>
-       </div>
-       </div>
           <div>
-          {vButtonVisible && ( // Conditionally render "V" button
-        <div className={style.btn}>
-          <div><button className={style.Vbtn} onClick={handleExpandCollapse}>V</button></div>
-        </div>
-      )}
       </div>
-      {error && (
-        <div className={styles.error}>
-          <pre>{error}</pre>
-        </div>
-      )}
       {isBtnCollapse && (
         <div className={style.buttonContainer}>
           <div className={style.btn}>
@@ -247,8 +234,21 @@ function Mainassemblies({subAssemblyName,fileLocation,}) {
           <div className={style.btn}>
             <button onClick={handleAddSpecification} disabled={!isSaveBtnClicked}>Add Specification</button>
           </div>
+          {error && (
+            <div className={styles.error}>
+              <pre>{error}</pre>
+            </div>
+          )}
         </div>
       )}
+          </table>
+       </div>
+       </div>
+      {vButtonVisible && ( // Conditionally render "V" button
+    <div className={style.btn}>
+      <div><button className={style.Vbtn} onClick={handleExpandCollapse}>V</button></div>
+    </div>
+  )}
     </div>
     </div>
   );
