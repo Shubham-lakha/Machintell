@@ -1,118 +1,111 @@
-import React, { useState } from "react";
-import ProductDetails from "./ProductDetails";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "../product.module.css";
+import { useDispatch } from "react-redux";
+import { productActions } from "../../../store";
+import generateId from "../../../util";
 
 function AddNewProduct() {
-  const [product, setProduct] = useState({
-    productName: "",
-    fileLocation: "",
-    mainFunction: "",
-    secondaryFunction: [],
-    specifications: [],
-  });
+    const nameRef = useRef();
+    const fileLocationRef = useRef();
+    const [error, setError] = useState("");
+    const dispatch = useDispatch();
 
-  const [form, setForm] = useState("");
-  const [error, setError] = useState("");
+    useEffect(() => {
+        dispatch(productActions.addProductName());
+    }, [dispatch]);
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    // console.log(value);
-    setProduct((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+    const validation = () => {
+        let isValid = true;
+        let errorMessage = "";
 
-  const handleSave = () => {
-    console.log("Saving data...", product);
+        // Check if productName is empty
+        if (nameRef.current.value.trim() === "") {
+            errorMessage += "Please enter product name.\n";
+            isValid = false;
+        }
 
-    // Perform validation
-    if (validation()) {
-      setForm("productAdded"); // Set the form state to 'productAdded' to display ProductDetails
-    } else {
-      console.log("Validation failed");
-    }
-  };
+        // Check if fileLocation is empty
+        if (fileLocationRef.current.value.trim() === "") {
+            errorMessage += "Please enter file location.\n";
+            isValid = false;
+        }
 
-  const validation = () => {
-    let isValid = true;
-    let errorMessage = "";
+        // Set error message
+        setError(errorMessage);
 
-    // Check if productName is empty
-    if (product.productName.trim() === "") {
-      errorMessage += "Please enter product name.\n";
-      isValid = false;
-    }
+        return isValid;
+    };
 
-    // Check if fileLocation is empty
-    if (product.fileLocation.trim() === "") {
-      errorMessage += "Please enter file location.\n";
-      isValid = false;
-    }
+    const handleSave = () => {
+        console.log("Saving data...");
 
-    // Set error message
-    setError(errorMessage);
+        // Perform validation
+        if (validation()) {
+            // add product data to backend
+            dispatch(
+                productActions.addProduct({
+                    name: nameRef.current.value,
+                    fileLocation: fileLocationRef.current.value,
+                    id: generateId(nameRef.current.value, "p"),
+                })
+            );
+        } else {
+            console.log("Validation failed");
+        }
+    };
 
-    return isValid;
-  };
-
-  return (
-    <div aria-label="Product Form" className={styles.form}>
-      {form === "productAdded" ? (
-        <ProductDetails product={product} handleInputChange={handleInputChange} />
-      ) : (
-        <form>
-          <div className={styles.tableContainer}>
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th className={styles.th}>Name of the Product</th>
-                  <td className={styles.td}>
-                    <input
-                      className={styles.input}
-                      type="text"
-                      value={product.productName}
-                      onChange={handleInputChange}
-                      name="productName"
-                    />
-                  </td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th className={styles.th}>File location</th>
-                  <td className={styles.td}>
-                    <input
-                      className={styles.input}
-                      type="text"
-                      value={product.fileLocation}
-                      onChange={handleInputChange}
-                      name="fileLocation"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <div className={styles.buttonGroup}>
-              <button
-                type="button"
-                className={styles.btn2}
-                onClick={handleSave}
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </form>
-      )}
-
-      {error && (
-        <div className={styles.error}>
-          <pre>{error}</pre>
+    return (
+        <div aria-label="Product Form" className={styles.form}>
+            <form>
+                <div className={styles.tableContainer}>
+                    <table className={styles.table}>
+                        <thead>
+                            <tr>
+                                <th className={styles.th}>
+                                    Name of the Product
+                                </th>
+                                <td className={styles.td}>
+                                    <input
+                                        ref={nameRef}
+                                        className={styles.input}
+                                        type="text"
+                                        required
+                                    />
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th className={styles.th}>File location</th>
+                                <td className={styles.td}>
+                                    <input
+                                        ref={fileLocationRef}
+                                        className={styles.input}
+                                        type="text"
+                                        required
+                                    />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div className={styles.buttonGroup}>
+                        <button
+                            type="button"
+                            className={styles.btn2}
+                            onClick={handleSave}
+                        >
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+            {error && (
+                <div className={styles.error}>
+                    <pre>{error}</pre>
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 }
 
 export default AddNewProduct;

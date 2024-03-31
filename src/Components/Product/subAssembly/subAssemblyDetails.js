@@ -1,17 +1,23 @@
-import React, { useRef, useState } from "react";
-import SpecificationDetails from "./SpecificationDetails";
+import React, { useState, useRef } from "react";
 import styles from "../product.module.css";
-import { useDispatch, useSelector } from "react-redux";
 import { productActions } from "../../../store";
+import { useDispatch, useSelector } from "react-redux";
 
-function ProductDetails() {
-    const { name, id, fileLocation, mainFunction, secondaryFunctions } =
-        useSelector((state) => state.product);
+function SubAssemblyDetails() {
+    const { subassemblies, currActive } = useSelector((state) => state.product);
+    const {
+        name,
+        fileLocation,
+        isBoughtUp,
+        isChildrenNeeded,
+        mainFunction,
+        secondaryFunctions,
+    } = subassemblies[currActive];
     const dispatch = useDispatch();
     const [error, setError] = useState("");
     const [secondaryFunctionsState, setSecondaryFunctionsState] =
-        useState(secondaryFunctions); // State to store secondary functions
-    const [selectedRows, setSelectedRows] = useState([]); // State to store selected row indices
+        useState(secondaryFunctions);
+    const [selectedRows, setSelectedRows] = useState([]);
     const mainFunctionRef = useRef();
 
     const handleAddSecondary = () => {
@@ -74,41 +80,60 @@ function ProductDetails() {
     };
 
     const handleSave = () => {
+        console.log(
+            "Saving data...",
+            mainFunctionRef.current.value,
+            secondaryFunctionsState
+        );
+
         // Perform validation
         if (validation()) {
             dispatch(
-                productActions.addProductDetails({
+                productActions.addSubassemblyDetails({
                     mainFunction: mainFunctionRef.current.value,
                     secondaryFunctions: [...secondaryFunctionsState],
                 })
             );
-            alert("Product details saved successfully!");
-            // add product details (main function) data to backend
-            // add product secondary functions data to backend
+            alert("Subassembly details saved successfully!");
+            // add subassembly details (main function) data to backend
+            // add subassembly secondary functions data to backend
         } else {
             console.log("Validation failed");
         }
     };
 
     return (
-        <div aria-label="productAdded" className={styles.form}>
+        <div aria-label="SubAssemblyAdded" className={styles.form}>
             <div>
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th className={styles.th}>Name of the Product</th>
+                            <th className={styles.th}>Name of sub-assembly</th>
                             <td className={styles.td}>{name}</td>
                         </tr>
                         <tr>
-                            <th className={styles.th}>Product ID</th>
-                            <td className={styles.td}>{id}</td>
+                            <th className={styles.th}>sub-assembly ID</th>
+                            <td className={styles.td}>{currActive}</td>
                         </tr>
                         <tr>
                             <th className={styles.th}>File location</th>
                             <td className={styles.td}>{fileLocation}</td>
                         </tr>
                         <tr>
-                            <th className={styles.th}>Main Functions</th>
+                            <th className={styles.th}>
+                                Is it completely bought up
+                            </th>
+                            <td className={styles.td}>{isBoughtUp}</td>
+                        </tr>
+                        <tr>
+                            <th className={styles.th}>
+                                Do you wish to add its subassemblies/components
+                                information?
+                            </th>
+                            <td className={styles.td}>{isChildrenNeeded}</td>
+                        </tr>
+                        <tr>
+                            <th className={styles.th}>Main Functions </th>
                             <td className={styles.td}>
                                 <textarea
                                     className={styles.input}
@@ -159,15 +184,22 @@ function ProductDetails() {
                     </tbody>
                 </table>
                 <div>
-                    <div className={styles.btn2}>
-                        <button onClick={handleAddSecondary}>Add </button>
-                    </div>
-                    <div className={styles.btn2}>
-                        <button onClick={handleDelete}>Delete </button>
-                    </div>
-                    <div className={styles.btn2}>
-                        <button onClick={handleSave}>Save</button>
-                    </div>
+                    <button
+                        className={styles.btn2}
+                        onClick={handleAddSecondary}
+                    >
+                        Add Secondary Function
+                    </button>
+                    <button className={styles.btn2} onClick={handleDelete}>
+                        Delete Selected Secondary Functions
+                    </button>
+                    <button
+                        className={styles.btn2}
+                        type="button"
+                        onClick={handleSave}
+                    >
+                        Save
+                    </button>
                 </div>
             </div>
             {error && (
@@ -175,9 +207,8 @@ function ProductDetails() {
                     <pre>{error}</pre>
                 </div>
             )}
-            <SpecificationDetails />
         </div>
     );
 }
 
-export default ProductDetails;
+export default SubAssemblyDetails;
