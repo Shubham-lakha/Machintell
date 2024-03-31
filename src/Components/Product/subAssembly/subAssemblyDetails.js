@@ -94,6 +94,7 @@ function SubAssemblyDetails() {
                     secondaryFunctions: [...secondaryFunctionsState],
                 })
             );
+            alert("Subassembly details saved successfully!");
             // add subassembly details (main function) data to backend
             // add subassembly secondary functions data to backend
         } else {

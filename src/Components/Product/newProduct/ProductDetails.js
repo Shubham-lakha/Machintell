@@ -74,12 +74,6 @@ function ProductDetails() {
     };
 
     const handleSave = () => {
-        console.log(
-            "Saving data...",
-            mainFunctionRef.current.value,
-            secondaryFunctionsState
-        );
-
         // Perform validation
         if (validation()) {
             dispatch(
@@ -88,6 +82,7 @@ function ProductDetails() {
                     secondaryFunctions: [...secondaryFunctionsState],
                 })
             );
+            alert("Product details saved successfully!");
             // add product details (main function) data to backend
             // add product secondary functions data to backend
         } else {
